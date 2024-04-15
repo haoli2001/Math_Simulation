@@ -1,0 +1,31 @@
+﻿#ifndef SIM_LIB_H
+#define SIM_LIB_H
+
+#define CONFIG_TYPE_NUMS 2
+#define CONFIG_INT_NUMS 2
+#define CONFIG_FLOAT_NUMS 14
+//#define CONFIG_CHAR_NUMS 20
+#define RESULT_TYPE_NUMS 2
+#define RESULT_INT_NUMS 4
+#define RESULT_FLOAT_NUMS 4
+//#define RESULT_CHAR_NUMS 20
+//仿真输入参数
+struct ConfigStruct
+{
+	ProcStatus command;
+	int idx;
+	int arg_int[3];//用户仿真模型的输入
+	float arg[3];
+};
+
+//仿真输出参数
+struct ResultStruct
+{
+	int idx;
+	int arg_int[3];
+	double arg_float[4];
+};
+
+int main_run(float* config, int idx, ResultStruct* result);
+
+#endif // !SIM_LIB_H
