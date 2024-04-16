@@ -11,7 +11,7 @@ BuildDirectory: D:/705/Math_Simulation/build
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: LAPTOP-3LHID30Q
+Site: hao
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Win32-mingw32-make
@@ -45,7 +45,7 @@ SVNOptions:
 SVNUpdateOptions: 
 
 # Git options
-GITCommand: C:/Program Files/Git/cmd/git.exe
+GITCommand: C:/Program Files/Git/bin/git.exe
 GITInitSubmodules: 
 GITUpdateOptions: 
 GITUpdateCustom: 
@@ -58,12 +58,12 @@ P4UpdateOptions:
 P4UpdateCustom: 
 
 # Generic update command
-UpdateCommand: C:/Program Files/Git/cmd/git.exe
+UpdateCommand: C:/Program Files/Git/bin/git.exe
 UpdateOptions: 
 UpdateType: git
 
 # Compiler info
-Compiler: D:/mingw/mingw64/bin/g++.exe
+Compiler: D:/mingw-w64/mingw64/bin/g++.exe
 CompilerVersion: 8.1.0
 
 # Dynamic analysis (MemCheck)
@@ -81,7 +81,7 @@ MemoryCheckCommandOptions:
 MemoryCheckSuppressionFile: 
 
 # Coverage
-CoverageCommand: D:/mingw/mingw64/bin/gcov.exe
+CoverageCommand: D:/mingw-w64/mingw64/bin/gcov.exe
 CoverageExtraFlags: -l
 
 # Testing options

@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Math_Simulation.dir/getopt.cpp.obj"
-  "CMakeFiles/Math_Simulation.dir/getopt.cpp.obj.d"
   "CMakeFiles/Math_Simulation.dir/main.cpp.obj"
   "CMakeFiles/Math_Simulation.dir/main.cpp.obj.d"
   "CMakeFiles/Math_Simulation.dir/mpi_manage.cpp.obj"

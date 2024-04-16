@@ -836,12 +836,12 @@ CMakeFiles/ContinuousSubmit.dir/clean:
 CMakeFiles/Math_Simulation.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Math_Simulation.dir\build.make CMakeFiles/Math_Simulation.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Math_Simulation.dir\build.make CMakeFiles/Math_Simulation.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\705\Math_Simulation\build\CMakeFiles --progress-num=1,2,3,4,5,6 "Built target Math_Simulation"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\705\Math_Simulation\build\CMakeFiles --progress-num=1,2,3,4,5 "Built target Math_Simulation"
 .PHONY : CMakeFiles/Math_Simulation.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Math_Simulation.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\705\Math_Simulation\build\CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\705\Math_Simulation\build\CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Math_Simulation.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\705\Math_Simulation\build\CMakeFiles 0
 .PHONY : CMakeFiles/Math_Simulation.dir/rule

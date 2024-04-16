@@ -8,7 +8,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/705/Math_Simulation/getopt.cpp" "CMakeFiles/Math_Simulation.dir/getopt.cpp.obj" "gcc" "CMakeFiles/Math_Simulation.dir/getopt.cpp.obj.d"
   "D:/705/Math_Simulation/main.cpp" "CMakeFiles/Math_Simulation.dir/main.cpp.obj" "gcc" "CMakeFiles/Math_Simulation.dir/main.cpp.obj.d"
   "D:/705/Math_Simulation/mpi_manage.cpp" "CMakeFiles/Math_Simulation.dir/mpi_manage.cpp.obj" "gcc" "CMakeFiles/Math_Simulation.dir/mpi_manage.cpp.obj.d"
   "D:/705/Math_Simulation/sim_lib.cpp" "CMakeFiles/Math_Simulation.dir/sim_lib.cpp.obj" "gcc" "CMakeFiles/Math_Simulation.dir/sim_lib.cpp.obj.d"

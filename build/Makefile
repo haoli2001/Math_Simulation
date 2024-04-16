@@ -522,30 +522,6 @@ Math_Simulation/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Math_Simulation.dir\build.make CMakeFiles/Math_Simulation.dir/build
 .PHONY : Math_Simulation/fast
 
-getopt.obj: getopt.cpp.obj
-.PHONY : getopt.obj
-
-# target to build an object file
-getopt.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Math_Simulation.dir\build.make CMakeFiles/Math_Simulation.dir/getopt.cpp.obj
-.PHONY : getopt.cpp.obj
-
-getopt.i: getopt.cpp.i
-.PHONY : getopt.i
-
-# target to preprocess a source file
-getopt.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Math_Simulation.dir\build.make CMakeFiles/Math_Simulation.dir/getopt.cpp.i
-.PHONY : getopt.cpp.i
-
-getopt.s: getopt.cpp.s
-.PHONY : getopt.s
-
-# target to generate assembly for a file
-getopt.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Math_Simulation.dir\build.make CMakeFiles/Math_Simulation.dir/getopt.cpp.s
-.PHONY : getopt.cpp.s
-
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -682,9 +658,6 @@ help:
 	@echo ... NightlyTest
 	@echo ... NightlyUpdate
 	@echo ... Math_Simulation
-	@echo ... getopt.obj
-	@echo ... getopt.i
-	@echo ... getopt.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

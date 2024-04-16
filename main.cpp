@@ -1,58 +1,62 @@
 #ifdef _WIN32
 #define _CRT_SECURE_NO_WARNINGS
-#include<windows.h>
-#include"getopt.h"
+#include <windows.h>
+#include "getopt.h"
 #define THREAD_HANDLE int
 #endif // _WIN32
 
 #ifdef _WIN64
 #define _CRT_SECURE_NO_WARNINGS
-#include<windows.h>
-#include"getopt.h"
+#include <windows.h>
+#include "getopt.h"
 #endif // _WIN64
 
 #ifdef linux
-#include<unistd.h>
-#include<pthread.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <signal.h>
 #define THREAD_HANDLE pthread_t
 #endif // linux
 
-
-#include<stdio.h>
-#include"mpi.h"
-#include<stdlib.h>
-#include<time.h>
-#include<string.h>
-#include<vector>
-#include<thread>
-
-#include"mpi_manage.h"
-#include"socketFunctions.h"
-#include"comm.h"
+#include <ctime>
+#include <cstring>
+#include <vector>
+#include <thread>
+#include <iostream>
 #include <mutex>
+#include <cstdio>
+#include "mpi.h"
+#include <cstdlib>
+
+
+#include "mpi_manage.h"
+#include "socketFunctions.h"
+#include "comm.h"
+#include "resource.h"
 
 using namespace std;
 
 struct CalcuInfo {
-	vector<ConfigStruct> configs;
-	mutex socketMutex;
+	ConfigStruct* configs;
+	int configsNum;
 	int procNum;
 	MPI_Datatype MPI_CONFIG;
 	MPI_Datatype MPI_RESULT;
 	int socketfd;
+	mutex* socketMutex;
 };
 
 void* calcThreadFunction(void *argv) {
 	CalcuInfo calcuInfo = *(CalcuInfo*)argv;
 	ConfigStruct sendBuf;
 
-	ResultStruct* results = new ResultStruct[calcuInfo.configs.size()];
+	ResultStruct* results = new ResultStruct[calcuInfo.configsNum];
 
 	unsigned int sendIdx = 0;
 	unsigned int recvIdx = 0;
 
-	unsigned int taskNum = calcuInfo.configs.size();	//本次需要计算的任务数量
-	printf("calculate: %d tasks\n", taskNum);
+	unsigned int taskNum = calcuInfo.configsNum;	//本次需要计算的任务数量
+	printf("[calcThreadFun]: start calculate %d tasks\n", taskNum);
 	if (calcuInfo.procNum == 1) {
 		printf("[WARNING]only master process is alive,please check!\n");
 		goto EXIT;
@@ -66,14 +70,14 @@ void* calcThreadFunction(void *argv) {
 				//向请求队列下发任务
 				sendBuf = calcuInfo.configs[sendIdx];
 				sendBuf.command = ProcStatus::START_TO_CALCU;
+				//printf("[calcThreadFun]: calculate the result %d/%d,\t\t\n", calcuInfo.configs[sendIdx].idx, calcuInfo.configsNum);
 				send_Task(sendBuf, calcuInfo.MPI_CONFIG, calcuInfo.MPI_RESULT);
-				//printf("calculate the result %d/%d,\t\tPID= %d\n", configs[sendIdx].idx, configs.size(), status.MPI_SOURCE);
 				sendIdx++;
 			}
 			else
 			{
 				//当前轮次所有条目计算完成后，向所有进程发送结束信号，并等待接收其计算结果
-				recv_CurRoundAllResults(calcuInfo.procNum, results, taskNum, calcuInfo.MPI_CONFIG, calcuInfo.MPI_RESULT, calcuInfo.socketfd);
+				recv_CurRoundAllResults(calcuInfo.procNum, results, taskNum, calcuInfo.MPI_CONFIG, calcuInfo.MPI_RESULT, calcuInfo.socketfd,calcuInfo.socketMutex);
 				break;
 			}
 		}
@@ -83,20 +87,7 @@ EXIT:
 	delete results;
 	return nullptr;
 }
-/**
- * @brief 管理端口
- * @details 管理端口用于接收上位机的配置信息，计算请求等
- * 
- * @param port 管理端口监听的端口号
-**/
-void manage(int port)
-{
-	init_socket();
-	int sockfd = create_socket();
-	bind_listen(sockfd, port);
-	int newSockfd = accept_client(sockfd);
-	
-}
+
 
 void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RESULT, int port)
 {
@@ -104,30 +95,40 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 	int sockfd = create_socket();
 	bind_listen(sockfd, port);
 	int newSockfd = accept_client(sockfd);
-	vector<ConfigStruct> configs;
-
+	ConfigStruct* configs=nullptr;
+	std::mutex socketMutex;
+    std::thread send_resource_thread(SendAllResource,ref(newSockfd),ref(socketMutex));//将三个节点的资源使用率发送给上位机
 	CalcuInfo calcuInfo;
 	THREAD_HANDLE calcThread;	//计算线程句柄
 	memset(&calcThread, 0, sizeof(THREAD_HANDLE));
-
 	while (true) {
 		Frame frame;
 		recv_data(newSockfd, (char*)&frame, sizeof(Frame));
+
 		switch (frame.command)
 		{
 		case(CommCommand::CONFIG_DATA): {
+			cout<<"[debug] recv config_data"<<endl;
 			int len = frame.length;
-			configs.resize(len);
-			recv_data(newSockfd, (char*)&configs, len * sizeof(ConfigStruct));
+			calcuInfo.configsNum=len;
+			if(configs){
+				delete configs;
+				configs=nullptr;
+			}
+				
+			configs = new ConfigStruct[len];
+			recv_data(newSockfd, (char*)configs, len * sizeof(ConfigStruct));
 			break;
 		}
 		case(CommCommand::CALCU): {
 			//配置并开始
+			cout<<"[debug] recv CALCU"<<endl;
 			calcuInfo.configs = configs;
 			calcuInfo.MPI_CONFIG = MPI_CONFIG;
 			calcuInfo.MPI_RESULT = MPI_RESULT;
 			calcuInfo.procNum = procNum;
 			calcuInfo.socketfd = newSockfd;
+			calcuInfo.socketMutex = &socketMutex;
 #ifdef linux
 			//开始执行计算线程，当计算线程正在执行时，则先关闭线程后再重新执行
 			if (calcThread != 0 && pthread_kill(calcThread, 0) == 0)
@@ -141,7 +142,7 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			break;
 		}
 		case(CommCommand::RESOURCE): {
-			send_Resource(newSockfd,)
+			//send_Resource(newSockfd,socketMutex);
 		}
 		case(CommCommand::EXIT): {
 			exit_AllProcess(procNum, MPI_CONFIG, MPI_RESULT);
@@ -151,6 +152,9 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			break;
 		}
 	}
+    send_resource_thread.join();
+
+
 }
 
 void slave(int myid, char* hostname, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT)
@@ -187,9 +191,8 @@ void slave(int myid, char* hostname, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI
 		{
 			//开始计算...
 			ResultStruct output;
-			//printf("before calculate the %dth result,\t\tPID= %d\nrecvBuf.arg[0]: = %f\n", recvBuf.idx, myid, recvBuf.arg[0]);
+			//printf("before calculate the %dth result,\t\tPID= %d\n", recvBuf.idx, myid);
 			main_run(recvBuf.arg, recvBuf.idx, &output);	//用户自定义计算模型入口
-			//printf("calculate the %dth result,\t\tPID= %d\n", output.idx, myid);
 			output.idx = recvBuf.idx;	//输出序号一定要和输入序号对应
 			results.push_back(output);
 
@@ -234,8 +237,8 @@ int main(int argc, char* argv[])
 	char hostname[100];
 
 	//初始化MPI，线程级别设置为：多线程, 但只有主线程会进行MPI调用
-	MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided_thread_rank);
-	if (provided_thread_rank < MPI_THREAD_FUNNELED)
+	MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided_thread_rank);
+	if (provided_thread_rank < MPI_THREAD_MULTIPLE)
 		MPI_Abort(MPI_COMM_WORLD, 1);
 	//MPI_Init(&argc, &argv);        // starts MPI
 	MPI_Comm_rank(MPI_COMM_WORLD, &myid);  // get current process id
@@ -249,12 +252,14 @@ int main(int argc, char* argv[])
 
 	double time = 0;
 	time = MPI_Wtime();
-
-	if (myid == 0)
+	if (myid == 0)//主进程
 	{
+
 		master(myid, numprocs, MPI_CONFIG, MPI_RESULT, port);
+
 	}
-	else
+
+	else//其余进程都用来计算
 	{
 		slave(myid, hostname, MPI_CONFIG, MPI_RESULT);
 	}

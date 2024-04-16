@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Win32-mingw32-make"
 	BuildStamp="20240416-0730-Experimental"
-	Name="LAPTOP-3LHID30Q"
+	Name="hao"
 	Generator="ctest-3.29.2"
-	CompilerName="D:/mingw/mingw64/bin/g++.exe"
+	CompilerName="D:/mingw-w64/mingw64/bin/g++.exe"
 	CompilerVersion="8.1.0"
 	OSName="Windows"
-	Hostname="LAPTOP-3LHID30Q"
-	OSRelease=" Personal"
-	OSVersion=" (Build 19045)"
+	Hostname="hao"
+	OSRelease=" Professional"
+	OSVersion=" (Build 22621)"
 	OSPlatform="AMD64"
 	Is64Bits="1"
-	VendorString="AuthenticAMD"
-	VendorID="Advanced Micro Devices"
-	FamilyID="15"
-	ModelID="0"
-	ProcessorCacheSize="64"
-	NumberOfLogicalCPU="8"
-	NumberOfPhysicalCPU="8"
-	TotalVirtualMemory="25979"
-	TotalPhysicalMemory="15739"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="7"
+	ProcessorCacheSize="-1"
+	NumberOfLogicalCPU="32"
+	NumberOfPhysicalCPU="24"
+	TotalVirtualMemory="34742"
+	TotalPhysicalMemory="32613"
 	LogicalProcessorsPerPhysical="1"
-	ProcessorClockFrequency="1996"
+	ProcessorClockFrequency="2995"
 	>
 	<Testing>
-		<StartDateTime>Apr 16 15:38 [NON-UTF-8-BYTE-0xD6]й[NON-UTF-8-BYTE-0xFA][NON-UTF-8-BYTE-0xB1][NON-UTF-8-BYTE-0xEA]׼ʱ[NON-UTF-8-BYTE-0xBC][NON-UTF-8-BYTE-0xE4]</StartDateTime>
-		<StartTestTime>1713253133</StartTestTime>
+		<StartDateTime>Apr 16 23:28 [NON-UTF-8-BYTE-0xD6]й[NON-UTF-8-BYTE-0xFA][NON-UTF-8-BYTE-0xB1][NON-UTF-8-BYTE-0xEA]׼ʱ[NON-UTF-8-BYTE-0xBC][NON-UTF-8-BYTE-0xE4]</StartDateTime>
+		<StartTestTime>1713281299</StartTestTime>
 		<TestList/>
-		<EndDateTime>Apr 16 15:38 [NON-UTF-8-BYTE-0xD6]й[NON-UTF-8-BYTE-0xFA][NON-UTF-8-BYTE-0xB1][NON-UTF-8-BYTE-0xEA]׼ʱ[NON-UTF-8-BYTE-0xBC][NON-UTF-8-BYTE-0xE4]</EndDateTime>
-		<EndTestTime>1713253133</EndTestTime>
+		<EndDateTime>Apr 16 23:28 [NON-UTF-8-BYTE-0xD6]й[NON-UTF-8-BYTE-0xFA][NON-UTF-8-BYTE-0xB1][NON-UTF-8-BYTE-0xEA]׼ʱ[NON-UTF-8-BYTE-0xBC][NON-UTF-8-BYTE-0xE4]</EndDateTime>
+		<EndTestTime>1713281299</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
