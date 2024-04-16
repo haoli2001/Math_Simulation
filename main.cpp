@@ -29,6 +29,7 @@
 #include"mpi_manage.h"
 #include"socketFunctions.h"
 #include"comm.h"
+#include <mutex>
 
 using namespace std;
 
@@ -84,7 +85,7 @@ EXIT:
 }
 /**
  * @brief 管理端口
- * 
+ * @details 管理端口用于接收上位机的配置信息，计算请求等
  * 
  * @param port 管理端口监听的端口号
 **/

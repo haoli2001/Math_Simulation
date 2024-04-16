@@ -9,6 +9,16 @@
 #define RESULT_INT_NUMS 4
 #define RESULT_FLOAT_NUMS 4
 //#define RESULT_CHAR_NUMS 20
+enum class ProcStatus//服务器状态管理端口
+{
+	MANAGE_CONNECT_SUCCESS = 0,          //管理端口连接成功
+	MANAGE_CONNECT_FAIL = 1,              //管理端口连接失败
+	READY_FOR_CALCU = 2,                   //准备计算
+	CALCU_ING = 3,                          //正在计算
+	CALCU_OVER = 4,                        //计算结束
+	EXIT = 5                                //退出
+};
+
 //仿真输入参数
 struct ConfigStruct
 {

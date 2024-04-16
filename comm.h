@@ -11,17 +11,8 @@ enum class CommCommand{
 		YES = 7,
 		NO = 8,
 		ALIVE = 9                    //心跳检测命令
-}
-
-enum class ProcStatus//服务器状态管理端口
-{
-	MANAGE_CONNECT_SUCCESS = 0,          //管理端口连接成功
-	MANAGE_CONNECT_FAIL = 1,              //管理端口连接失败
-	READY_FOR_CALCU = 2,                   //准备计算
-	CALCU_ING = 3,                          //正在计算
-	CALCU_OVER = 4,                        //计算结束
-	EXIT = 5                                //退出
 };
+
 
 struct Resource
 {
