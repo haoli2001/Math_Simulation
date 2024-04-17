@@ -2,12 +2,17 @@
 ## 运行环境
 windows 10
 ## 依赖
-MSMPI
+MSMPI v10.1.3
+## 安装
+安装地址在 https://www.microsoft.com/en-us/download/details.aspx?id=105289
+visual studio 配置mpi教程 https://blog.csdn.net/Jacamox/article/details/112563361
 ## 编译器
 MSVC 2017
-**注意**使用mingw即g++链接MSVC时会出错
+**注意**使用mingw即g++链接MSMPI时会出错，可能是微软专门屏蔽了mingw的链接。
 ## 编译
-这里使用的是cmake进行编译，编译命令为
+如果使用visual studio直接按照教程进行编译。
+在vscode中，cmake首先 ctrl+shift+p 打开命令面板，输入cmake:Select a Kit，选择Visual Studio Professional 2017 Release - amd64。
+再使用cmake进行编译，编译命令为
 ```
     cd ./build
     cmake ../
@@ -78,7 +83,7 @@ tasklist /FI "PID eq 28008"
 ![socket_bug_mpi](/image/socket_bug_mpi.jpg "socket_bug_mpi")
 
 解决方案
-使用MSVC编译器，GCC编译器链接不了mpi，其次windows下连接后才会print"waiting for connect"，原因不明。
+使用MSVC编译器，GCC编译器链接不了mpi，其次windows下连接后才会print"waiting for connect"，甚至在发送想定表之后才会打印该信息，并且和connected一起打印，原因不明。
 Mingw安装时建议不要选择win32，选择posix，否则std成员例如mutex，thread都找不到！
-
+当前版本的bug是，计算结束回传结果已经发送了，但是界面端接收不到，甚至没有触发recv，原因不明。
 
