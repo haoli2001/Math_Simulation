@@ -43,7 +43,19 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/lib.exe"
+			"value" : "C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/lib.exe"
+		},
+		{
+			"name" : "CMAKE_BUILD_TYPE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "STRING",
+			"value" : "Debug"
 		},
 		{
 			"name" : "CMAKE_CACHEFILE_DIR",
@@ -391,7 +403,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Microsoft Visual Studio/2017/Community"
+			"value" : "C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional"
 		},
 		{
 			"name" : "CMAKE_GENERATOR_PLATFORM",
@@ -455,7 +467,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/link.exe"
+			"value" : "C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/link.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -551,7 +563,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Windows Kits/10/bin/10.0.17763.0/x64/mt.exe"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x64/mt.exe"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -699,7 +711,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Windows Kits/10/bin/10.0.17763.0/x64/rc.exe"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x64/rc.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER_WORKS",
@@ -1027,7 +1039,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/mingw/mingw64/bin/gcov.exe"
+			"value" : "D:/mingw-w64/mingw64/bin/gcov.exe"
 		},
 		{
 			"name" : "COVERAGE_EXTRA_FLAGS",
@@ -1283,7 +1295,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/Git/cmd/git.exe"
+			"value" : "C:/Program Files/Git/bin/git.exe"
 		},
 		{
 			"name" : "HGCOMMAND",
@@ -1415,7 +1427,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "LAPTOP-3LHID30Q"
+			"value" : "hao"
 		},
 		{
 			"name" : "SVNCOMMAND",

@@ -11,7 +11,7 @@ BuildDirectory: D:/705/Math_Simulation/build
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: LAPTOP-3LHID30Q
+Site: hao
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Win32-MSBuild
@@ -45,7 +45,7 @@ SVNOptions:
 SVNUpdateOptions: 
 
 # Git options
-GITCommand: C:/Program Files/Git/cmd/git.exe
+GITCommand: C:/Program Files/Git/bin/git.exe
 GITInitSubmodules: 
 GITUpdateOptions: 
 GITUpdateCustom: 
@@ -58,13 +58,13 @@ P4UpdateOptions:
 P4UpdateCustom: 
 
 # Generic update command
-UpdateCommand: C:/Program Files/Git/cmd/git.exe
+UpdateCommand: C:/Program Files/Git/bin/git.exe
 UpdateOptions: 
 UpdateType: git
 
 # Compiler info
-Compiler: D:/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe
-CompilerVersion: 19.16.27045.0
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe
+CompilerVersion: 19.16.27051.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 
@@ -81,7 +81,7 @@ MemoryCheckCommandOptions:
 MemoryCheckSuppressionFile: 
 
 # Coverage
-CoverageCommand: D:/mingw/mingw64/bin/gcov.exe
+CoverageCommand: D:/mingw-w64/mingw64/bin/gcov.exe
 CoverageExtraFlags: -l
 
 # Testing options

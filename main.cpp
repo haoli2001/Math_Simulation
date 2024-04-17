@@ -102,7 +102,7 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 	memset(&calcThread, 0, sizeof(THREAD_HANDLE));
 #endif
 #ifdef _WINDOWS_
-	thread calcThread;	//计算线程句柄
+	std::thread calcThread;	//计算线程
 #endif
 	while (true) {
 		Frame frame;
@@ -142,9 +142,15 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			}
 			pthread_create(&calcThread, NULL, calcThreadFunction, (void*)&calcuInfo);
 #endif // linux
-#ifdef _WIN32
+#ifdef _WINDOWS_
 			//开始执行计算线程，当计算线程正在执行时，则先关闭线程后再重新执行
-
+			if (calcThread.joinable())
+			{
+    			// 如果线程已经启动，先等待它完成
+   				 calcThread.join();
+			}
+    		calcThread = thread(calcThreadFunction, &calcuInfo);
+#endif
 			break;
 		}
 		case(CommCommand::RESOURCE): {
@@ -285,5 +291,3 @@ int main(int argc, char* argv[])
 	MPI_Finalize();
 	return 0;
 }
-
-
