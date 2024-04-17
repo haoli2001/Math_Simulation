@@ -1,0 +1,10 @@
+^D:\705\MATH_SIMULATION\BUILD\CMAKEFILES\8D7869442A528ACA09575BD25ED44C4C\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/705/Math_Simulation -BD:/705/Math_Simulation/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/705/Math_Simulation/build/Math_Simulation.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

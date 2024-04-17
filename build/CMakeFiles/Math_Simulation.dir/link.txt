@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\Math_Simulation.dir/objects.a
-D:\mingw-w64\mingw64\bin\ar.exe qc CMakeFiles\Math_Simulation.dir/objects.a @CMakeFiles\Math_Simulation.dir\objects1.rsp
-D:\mingw-w64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\Math_Simulation.dir/objects.a -Wl,--no-whole-archive -o Math_Simulation.exe -Wl,--out-implib,libMath_Simulation.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Math_Simulation.dir\linkLibs.rsp

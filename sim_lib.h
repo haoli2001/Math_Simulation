@@ -1,4 +1,4 @@
-#ifndef SIM_LIB_H
+﻿#ifndef SIM_LIB_H
 #define SIM_LIB_H
 
 #define CONFIG_TYPE_NUMS 2
@@ -24,8 +24,8 @@ struct ConfigStruct
 {
 	ProcStatus command;
 	int idx;
-	int arg_int[3];//用户仿真模型的输入
-	float arg[12];
+	//int arg_int[3];//用户仿真模型的输入
+	float arg[14];
 };
 
 //仿真输出参数

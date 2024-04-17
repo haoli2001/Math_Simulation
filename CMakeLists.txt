@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(Math_Simulation VERSION 0.1.0 LANGUAGES CXX)
-Set(CMAKE_CXX_COMPILER "D:/mingw-w64/mingw64/bin/g++.exe")
+#Set(CMAKE_CXX_COMPILER "D:/mingw/mingw64/bin/g++.exe")
+message("C编译器路径: ${CMAKE_C_COMPILER}")
+message("C++编译器路径: ${CMAKE_CXX_COMPILER}")
 include(CTest)
 enable_testing()
 
@@ -20,15 +22,12 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include_directories("C:/Program Files (x86)/Microsoft SDKs/MPI/Include")
 include_directories("C:/Program Files (x86)/Microsoft SDKs/MPI/Include/x64")
 
-# 添加MS-MPI库文件路径
+
+# 添加MS-MPI库文件路径C:\Program Files (x86)\Microsoft SDKs\MPI\Lib\x64
 link_directories("C:/Program Files (x86)/Microsoft SDKs/MPI/Lib/x64")
 
 # 链接MS-MPI库
-target_link_libraries(Math_Simulation msmpi.lib)
+target_link_libraries(Math_Simulation "C:/Program Files (x86)/Microsoft SDKs/MPI/Lib/x64/msmpi.lib")
 
 # 包含CPack模块以进行打包
 include(CPack)
-
-# 确保包含了<mutex>头文件以使用std::mutex
-# 如果你没有使用using namespace std;，则需要在代码中加上std::前缀
-# 例如：std::mutex socketMutex;

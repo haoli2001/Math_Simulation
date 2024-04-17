@@ -1,25 +1,25 @@
 [
 {
   "directory": "D:/705/Math_Simulation/build",
-  "command": "D:\\mingw-w64\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\main.cpp.obj -c D:\\705\\Math_Simulation\\main.cpp",
+  "command": "D:\\mingw\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\main.cpp.obj -c D:\\705\\Math_Simulation\\main.cpp",
   "file": "D:/705/Math_Simulation/main.cpp",
   "output": "CMakeFiles/Math_Simulation.dir/main.cpp.obj"
 },
 {
   "directory": "D:/705/Math_Simulation/build",
-  "command": "D:\\mingw-w64\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\mpi_manage.cpp.obj -c D:\\705\\Math_Simulation\\mpi_manage.cpp",
+  "command": "D:\\mingw\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\mpi_manage.cpp.obj -c D:\\705\\Math_Simulation\\mpi_manage.cpp",
   "file": "D:/705/Math_Simulation/mpi_manage.cpp",
   "output": "CMakeFiles/Math_Simulation.dir/mpi_manage.cpp.obj"
 },
 {
   "directory": "D:/705/Math_Simulation/build",
-  "command": "D:\\mingw-w64\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\sim_lib.cpp.obj -c D:\\705\\Math_Simulation\\sim_lib.cpp",
+  "command": "D:\\mingw\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\sim_lib.cpp.obj -c D:\\705\\Math_Simulation\\sim_lib.cpp",
   "file": "D:/705/Math_Simulation/sim_lib.cpp",
   "output": "CMakeFiles/Math_Simulation.dir/sim_lib.cpp.obj"
 },
 {
   "directory": "D:/705/Math_Simulation/build",
-  "command": "D:\\mingw-w64\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\socketFunctions.cpp.obj -c D:\\705\\Math_Simulation\\socketFunctions.cpp",
+  "command": "D:\\mingw\\mingw64\\bin\\g++.exe  @CMakeFiles/Math_Simulation.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\Math_Simulation.dir\\socketFunctions.cpp.obj -c D:\\705\\Math_Simulation\\socketFunctions.cpp",
   "file": "D:/705/Math_Simulation/socketFunctions.cpp",
   "output": "CMakeFiles/Math_Simulation.dir/socketFunctions.cpp.obj"
 }

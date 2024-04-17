@@ -8,7 +8,6 @@
 #include "mpi_manage.h"
 #include "socketFunctions.h"
 #include "comm.h"
-#include "resource.h"
 using namespace std;
 void commit_new_type(MPI_Datatype &MPI_CONFIG, MPI_Datatype &MPI_RESULT)
 {

@@ -1,38 +1,36 @@
 #ifdef _WIN32
 #define _CRT_SECURE_NO_WARNINGS
-#include <windows.h>
-#include "getopt.h"
+#include<windows.h>
+//#include"getopt.h"
 #define THREAD_HANDLE int
 #endif // _WIN32
 
 #ifdef _WIN64
 #define _CRT_SECURE_NO_WARNINGS
-#include <windows.h>
-#include "getopt.h"
+#include<windows.h>
+//#include"getopt.h"
 #endif // _WIN64
 
 #ifdef linux
-#include <unistd.h>
-#include <pthread.h>
-#include <signal.h>
+#include<unistd.h>
+#include<pthread.h>
+#include<signal.h>
 #define THREAD_HANDLE pthread_t
 #endif // linux
 
-#include <ctime>
-#include <cstring>
-#include <vector>
-#include <thread>
-#include <iostream>
-#include <mutex>
-#include <cstdio>
-#include "mpi.h"
-#include <cstdlib>
 
+#include<stdio.h>
+#include"mpi.h"
+#include<stdlib.h>
+#include<time.h>
+#include<string.h>
+#include<vector>
+#include<thread>
 
-#include "mpi_manage.h"
-#include "socketFunctions.h"
-#include "comm.h"
-#include "resource.h"
+#include"mpi_manage.h"
+#include"socketFunctions.h"
+#include"comm.h"
+
 
 using namespace std;
 
@@ -97,10 +95,15 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 	int newSockfd = accept_client(sockfd);
 	ConfigStruct* configs=nullptr;
 	std::mutex socketMutex;
-    std::thread send_resource_thread(SendAllResource,ref(newSockfd),ref(socketMutex));//将三个节点的资源使用率发送给上位机
+    //thread send_resource_thread(SendAllResource,ref(newSockfd),ref(socketMutex));//将三个节点的资源使用率发送给上位机
 	CalcuInfo calcuInfo;
+#ifdef linux
 	THREAD_HANDLE calcThread;	//计算线程句柄
 	memset(&calcThread, 0, sizeof(THREAD_HANDLE));
+#endif
+#ifdef _WINDOWS_
+	thread calcThread;	//计算线程句柄
+#endif
 	while (true) {
 		Frame frame;
 		recv_data(newSockfd, (char*)&frame, sizeof(Frame));
@@ -139,6 +142,9 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			}
 			pthread_create(&calcThread, NULL, calcThreadFunction, (void*)&calcuInfo);
 #endif // linux
+#ifdef _WIN32
+			//开始执行计算线程，当计算线程正在执行时，则先关闭线程后再重新执行
+
 			break;
 		}
 		case(CommCommand::RESOURCE): {
@@ -152,7 +158,7 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			break;
 		}
 	}
-    send_resource_thread.join();
+    //send_resource_thread.join();
 
 
 }
@@ -213,32 +219,32 @@ void slave(int myid, char* hostname, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI
 
 int main(int argc, char* argv[])
 {
-	int o;
+	//int o;
 	int port = 4000;
 	// 选项-p,后跟参数，表示主机socket要绑定的端口号
-	const char *optstring = "p:";
+	// const char *optstring = "p:";
 	
-	while ((o = getopt(argc, argv, optstring)) != -1) {
-		switch (o) {
-		case 'p':
-			printf("opt is p, oprarg is: %s\n", optarg);
-			port = atoi(optarg);
-			break;
-		case '?':
-			printf("error optopt: %c\n", optopt);
-			printf("error opterr: %d\n", opterr);
-			printf("default port is 4000\n");
-			break;
-		}
-	}
+	// while ((o = getopt(argc, argv, optstring)) != -1) {
+	// 	switch (o) {
+	// 	case 'p':
+	// 		printf("opt is p, oprarg is: %s\n", optarg);
+	// 		port = atoi(optarg);
+	// 		break;
+	// 	case '?':
+	// 		printf("error optopt: %c\n", optopt);
+	// 		printf("error opterr: %d\n", opterr);
+	// 		printf("default port is 4000\n");
+	// 		break;
+	// 	}
+	// }
 
 	int myid, numprocs, namelen, provided_thread_rank;
 	char processor_name[MPI_MAX_PROCESSOR_NAME];
 	char hostname[100];
 
 	//初始化MPI，线程级别设置为：多线程, 但只有主线程会进行MPI调用
-	MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided_thread_rank);
-	if (provided_thread_rank < MPI_THREAD_MULTIPLE)
+	MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided_thread_rank);
+	if (provided_thread_rank < MPI_THREAD_FUNNELED)
 		MPI_Abort(MPI_COMM_WORLD, 1);
 	//MPI_Init(&argc, &argv);        // starts MPI
 	MPI_Comm_rank(MPI_COMM_WORLD, &myid);  // get current process id
@@ -252,13 +258,18 @@ int main(int argc, char* argv[])
 
 	double time = 0;
 	time = MPI_Wtime();
+    int tag, source,source_2, destination, count;//MPI的tag，发送进程1，2，发送目的地（主进程），发送数
+    tag = 888;//胡写的，吉利
+    source = 1;//修改为节点1中的进程号
+    destination = 0;//主节点中的主进程
+    source_2 = 2;//修改为节点2中的进程号
+    count = 2;//resource中有CPU和Mem所以count为2
 	if (myid == 0)//主进程
 	{
 
 		master(myid, numprocs, MPI_CONFIG, MPI_RESULT, port);
 
 	}
-
 	else//其余进程都用来计算
 	{
 		slave(myid, hostname, MPI_CONFIG, MPI_RESULT);
