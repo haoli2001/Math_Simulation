@@ -110,18 +110,19 @@ void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen,
 
 		MPI_Recv(results + resultBufOffset, recvNumPerProc, MPI_RESULT, status.MPI_SOURCE, 0, MPI_COMM_WORLD, &status);
 		resultBufOffset += recvNumPerProc;
+		printf("recv %d from process %d\n", recvNumPerProc, status.MPI_SOURCE);
 	}
 
 
 	//收到所有进程的结果后，将结果发回上位机。计算结束，返回
 	//将收到的乱序结果数据排序
-	//printf("[DEBUG]:master ready to write result!\n");
+	printf("[DEBUG]:master ready to write result!\n");
 	ResultStruct* tmp_results = new ResultStruct[resultsLen];
-	//printf("[DEBUG]:master new complete!,configs.size = %d\n", resultsLen);
+	printf("[DEBUG]:master new complete!,configs.size = %d\n", resultsLen);
 	for (int i = 0; i < resultsLen; i++)
 	{
 		int orderIdx = results[i].idx;
-		//printf("[DEBUG]:results[%d].idx = %d\n", i, results[i].idx);
+		printf("[DEBUG]:results[%d].idx = %d\n", i, results[i].idx);
 		tmp_results[orderIdx] = results[i];
 	}
 	
@@ -129,6 +130,7 @@ void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen,
 	socketMutex->lock();
 	int sendedLength = 0;
 	Frame frame;
+	printf("master send result to client\n");
 	while (true)
 	{
 		frame.command = CommCommand::RESULT;
@@ -141,7 +143,7 @@ void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen,
 		}
 		else
 		{
-			//std::cout<<"[debug] sizeof(ResStruct)="<<sizeof(ResultStruct)<<" res len="<<resultsLen<<std::endl;
+			std::cout<<"[debug] sizeof(ResStruct)="<<sizeof(ResultStruct)<<" res len="<<resultsLen<<std::endl;
 			memcpy(frame.data, (char*)tmp_results + sendedLength, resultsLen * sizeof(ResultStruct) - sendedLength);
 			frame.length = resultsLen * sizeof(ResultStruct) - sendedLength;
 			send_frame(socketfd, (char*)&frame, sizeof(Frame));

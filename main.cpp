@@ -68,7 +68,7 @@ void* calcThreadFunction(void *argv) {
 				//向请求队列下发任务
 				sendBuf = calcuInfo.configs[sendIdx];
 				sendBuf.command = ProcStatus::START_TO_CALCU;
-				//printf("[calcThreadFun]: calculate the result %d/%d,\t\t\n", calcuInfo.configs[sendIdx].idx, calcuInfo.configsNum);
+				printf("[calcThreadFun]: calculate the result %d/%d,\t\t\n", calcuInfo.configs[sendIdx].idx, calcuInfo.configsNum);
 				send_Task(sendBuf, calcuInfo.MPI_CONFIG, calcuInfo.MPI_RESULT);
 				sendIdx++;
 			}
@@ -171,7 +171,7 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 
 void slave(int myid, char* hostname, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT)
 {
-	//printf("this is slave!\n");
+	printf("this is slave!\n");
 	ConfigStruct sendBuf;
 	ConfigStruct recvBuf;
 	vector<ResultStruct>results;
@@ -190,7 +190,7 @@ void slave(int myid, char* hostname, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI
 			sendBuf.command = ProcStatus::SLAVEPROCESS_EXIT;
 			if (!results.empty())
 			{
-				//printf("send %d results,\t\tPID= %d\n", results.size(), myid);
+				printf("send %d results,\t\tPID= %d\n", results.size(), myid);
 				MPI_Ssend(&results[0], results.size(), MPI_RESULT, 0, 0, MPI_COMM_WORLD);
 				results.clear();
 			}
