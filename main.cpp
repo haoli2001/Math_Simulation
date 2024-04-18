@@ -264,12 +264,6 @@ int main(int argc, char* argv[])
 
 	double time = 0;
 	time = MPI_Wtime();
-    int tag, source,source_2, destination, count;//MPI的tag，发送进程1，2，发送目的地（主进程），发送数
-    tag = 888;//胡写的，吉利
-    source = 1;//修改为节点1中的进程号
-    destination = 0;//主节点中的主进程
-    source_2 = 2;//修改为节点2中的进程号
-    count = 2;//resource中有CPU和Mem所以count为2
 	if (myid == 0)//主进程
 	{
 
