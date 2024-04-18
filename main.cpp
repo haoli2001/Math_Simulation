@@ -120,7 +120,7 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			}
 				
 			configs = new ConfigStruct[len];
-			recv_data(newSockfd, (char*)configs, len * sizeof(ConfigStruct));
+			recv_data(newSockfd, (char*)configs, len * sizeof(ConfigStruct));//接收想定表数据，len个ConfigStruct即len行。
 			break;
 		}
 		case(CommCommand::CALCU): {
@@ -129,7 +129,7 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			calcuInfo.configs = configs;
 			calcuInfo.MPI_CONFIG = MPI_CONFIG;
 			calcuInfo.MPI_RESULT = MPI_RESULT;
-			calcuInfo.procNum = procNum;
+			calcuInfo.procNum = procNum;//当前进程数量
 			calcuInfo.socketfd = newSockfd;
 			calcuInfo.socketMutex = &socketMutex;
 #ifdef linux

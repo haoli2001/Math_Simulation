@@ -71,6 +71,15 @@ void commit_new_type(MPI_Datatype &MPI_CONFIG, MPI_Datatype &MPI_RESULT)
 
 
 
+/**
+ * @brief 结束所有进程
+ *
+ * 在 MPI 通信中，该函数用于结束所有从进程。
+ *
+ * @param procNum 进程数
+ * @param MPI_CONFIG MPI 数据类型，表示配置信息
+ * @param MPI_RESULT MPI 数据类型，表示结果信息
+ */
 void exit_AllProcess(int procNum, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT)
 {
 	unsigned int exitNum = 0;
@@ -91,6 +100,20 @@ void exit_AllProcess(int procNum, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RE
 	}
 }
 
+/**
+ * @brief 接收当前轮次的所有结果
+ *
+ * 从指定的进程数开始，接收所有从进程的计算结果，并将其存储在给定的结果数组中。
+ * 接收完所有进程的结果后，将结果发回上位机。
+ *
+ * @param procNum 进程数
+ * @param results 结果数组
+ * @param resultsLen 结果数组长度
+ * @param MPI_CONFIG MPI_Datatype 类型，表示配置信息的 MPI 数据类型
+ * @param MPI_RESULT MPI_Datatype 类型，表示结果的 MPI 数据类型
+ * @param socketfd 套接字文件描述符
+ * @param socketMutex 互斥锁指针，用于在发送结果时加锁
+ */
 void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT, int socketfd, std::mutex* socketMutex)
 {
 	MPI_Status status;
@@ -106,7 +129,7 @@ void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen,
 
 		MPI_Probe(status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &status);
 		int recvNumPerProc = 0;
-		MPI_Get_count(&status, MPI_RESULT, &recvNumPerProc);
+		MPI_Get_count(&status, MPI_RESULT, &recvNumPerProc);//获取从进程发送过来的数据长度,即结果个数
 
 		MPI_Recv(results + resultBufOffset, recvNumPerProc, MPI_RESULT, status.MPI_SOURCE, 0, MPI_COMM_WORLD, &status);
 		resultBufOffset += recvNumPerProc;
