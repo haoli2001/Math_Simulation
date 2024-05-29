@@ -40,7 +40,7 @@ struct CalcuInfo {
 	int procNum;
 	MPI_Datatype MPI_CONFIG;
 	MPI_Datatype MPI_RESULT;
-	int socketfd;
+	int* socketfd;
 	mutex* socketMutex;
 };
 
@@ -82,7 +82,7 @@ void* calcThreadFunction(void *argv) {
 	}
 
 EXIT:
-	delete results;
+	delete[] results;
 	return nullptr;
 }
 
@@ -92,7 +92,8 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 	init_socket();
 	int sockfd = create_socket();
 	bind_listen(sockfd, port);
-	int newSockfd = accept_client(sockfd);
+	int socket = accept_client(sockfd);
+	int* newSockfd = &socket;
 	ConfigStruct* configs=nullptr;
 	std::mutex socketMutex;
     //thread send_resource_thread(SendAllResource,ref(newSockfd),ref(socketMutex));//将三个节点的资源使用率发送给上位机
@@ -106,7 +107,21 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 #endif
 	while (true) {
 		Frame frame;
-		recv_data(newSockfd, (char*)&frame, sizeof(Frame));
+		while (true)
+		{
+			int length = recv_data(*newSockfd, (char*)&frame, sizeof(Frame));
+			if (length == sizeof(Frame))
+			{
+				break;
+			}
+			else if (length == -1 || length == 0)//对方连接关闭，不管是正常还是异常关闭都直接关闭当前socket重新接受
+			{
+				CloseSocket(*newSockfd);
+				socket = accept_client(sockfd);
+				continue;
+			}
+		}
+		
 
 		switch (frame.command)
 		{
@@ -115,12 +130,12 @@ void master(int myid, int procNum, MPI_Datatype MPI_CONFIG, MPI_Datatype MPI_RES
 			int len = frame.length;
 			calcuInfo.configsNum=len;
 			if(configs){
-				delete configs;
+				delete[] configs;
 				configs=nullptr;
 			}
 				
 			configs = new ConfigStruct[len];
-			recv_data(newSockfd, (char*)configs, len * sizeof(ConfigStruct));//接收想定表数据，len个ConfigStruct即len行。
+			recv_data(*newSockfd, (char*)configs, len * sizeof(ConfigStruct));//接收想定表数据，len个ConfigStruct即len行。
 			break;
 		}
 		case(CommCommand::CALCU): {

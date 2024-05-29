@@ -18,7 +18,7 @@
 返回值：无
 备注：阻塞函数
 ***************************/
-void recv_data(int socket, char *d_p, int length);
+int recv_data(int socket, char *d_p, int length);
 
 /**************************
 名称：void send_frame(int socket, char *d_p, int length);
@@ -63,6 +63,6 @@ int bind_listen(int sockfd, int port);
 ***************************/
 int accept_client(int sockfd);
 
-
+int CloseSocket(int sockfd);
 
 #endif

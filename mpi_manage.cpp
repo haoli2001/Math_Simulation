@@ -114,7 +114,7 @@ void exit_AllProcess(int procNum, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RE
  * @param socketfd 套接字文件描述符
  * @param socketMutex 互斥锁指针，用于在发送结果时加锁
  */
-void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT, int socketfd, std::mutex* socketMutex)
+void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT, int* socketfd, std::mutex* socketMutex)
 {
 	MPI_Status status;
 	ConfigStruct sendBuf;
@@ -161,7 +161,7 @@ void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen,
 		{
 			memcpy(frame.data, (char*)tmp_results + sendedLength, 1024);
 			frame.length = 1024;
-			send_frame(socketfd, (char*)&frame, sizeof(Frame));
+			send_frame(*socketfd, (char*)&frame, sizeof(Frame));
 			sendedLength += 1024;
 		}
 		else
@@ -169,13 +169,13 @@ void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen,
 			std::cout<<"[debug] sizeof(ResStruct)="<<sizeof(ResultStruct)<<" res len="<<resultsLen<<std::endl;
 			memcpy(frame.data, (char*)tmp_results + sendedLength, resultsLen * sizeof(ResultStruct) - sendedLength);
 			frame.length = resultsLen * sizeof(ResultStruct) - sendedLength;
-			send_frame(socketfd, (char*)&frame, sizeof(Frame));
+			send_frame(*socketfd, (char*)&frame, sizeof(Frame));
 			break;
 		}
 	}
 	socketMutex->unlock();
 
-	delete tmp_results;
+	delete[] tmp_results;
 }
 
 void send_Task(ConfigStruct sendBuf, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT)

@@ -29,7 +29,7 @@
 #endif
 
 #pragma comment(lib, "Ws2_32.lib")
-
+#include <iostream>
 #ifndef INVALID_SOCKET
 #define INVALID_SOCKET -1
 #endif
@@ -42,25 +42,50 @@
 
 #define BACKLOG 5 
 
-void recv_data(int socket, char *d_p, int length)
-{
+int recv_data(int socket, char* d_p, int length) {
 	int l = 0;
 	int suml = length;
-	while (true)
-	{
+
+	while (true) {
 		int m_length = recv(socket, d_p, length, 0);
-		if (m_length == -1)
-			continue;
+		if (m_length == -1) {
+#ifdef _WIN32
+			int error_code = WSAGetLastError();
+			if (error_code == WSAEWOULDBLOCK || error_code == WSAEINTR) {
+				// 当前没有数据可读，继续等待
+				continue;
+			}
+			else {
+				// 其他错误，返回错误码
+				std::cerr << "recv failed with error: " << error_code << std::endl;
+				return -1;
+			}
+#else
+			if (errno == EWOULDBLOCK || errno == EINTR) {
+				// 当前没有数据可读，继续等待
+				continue;
+			}
+			else {
+				// 其他错误，返回错误码
+				std::cerr << "recv failed with error: " << errno << std::endl;
+				return -1;
+			}
+#endif
+		}
+		if (m_length == 0) {
+			// 对端关闭连接
+			return 0;
+		}
 		l += m_length;
 		if (l == suml)
-			return;
-		else
-		{
-			d_p = d_p + m_length;
-			length = length - m_length;
+			return suml;
+		else {
+			d_p += m_length;
+			length -= m_length;
 		}
 	}
 }
+
 
 void send_frame(int socket, char *d_p, int length)
 {
@@ -161,4 +186,27 @@ int accept_client(int sockfd)
 	printf("connected\n");
 
 	return new_fd;
+}
+
+int CloseSocket(int sockfd)
+{
+#ifdef linux
+	if (close(sockfd) == 0) {
+		std::cout << "Socket closed successfully\n";
+	}
+	else {
+		std::cerr << "Error closing socket\n";
+		return 1;
+	}
+#endif
+#ifdef _WINDOWS_
+	if (closesocket(sockfd) == 0) {
+		std::cout << "Socket closed successfully\n";
+	}
+	else {
+		std::cerr << "Error closing socket\n";
+		return 1;
+	}
+#endif
+	return 0;
 }

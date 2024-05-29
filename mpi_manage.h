@@ -17,7 +17,7 @@ void exit_AllProcess(int procNum, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RE
 unsigned int getCurCalcuEndIdx(unsigned int allTaskNum, unsigned int nums_per_round, unsigned int sendIdx);
 unsigned int getCurRoundIdx();
 void setCurRoundIdx(unsigned int roundIdx);
-void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT, int socketfd, std::mutex* socketMutex);
+void recv_CurRoundAllResults(int procNum, ResultStruct* results, int resultsLen, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT, int* socketfd, std::mutex* socketMutex);
 void send_Task(ConfigStruct sendBuf, MPI_Datatype& MPI_CONFIG, MPI_Datatype& MPI_RESULT);
 //void send_Resource(int socketfd, std::mutex& socketMutex);
 //CPUUsage getCPUUsage();

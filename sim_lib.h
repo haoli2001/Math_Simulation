@@ -33,7 +33,7 @@ struct ResultStruct
 {
 	int idx;
 	int arg_int[3];
-	float arg_float[4];
+	double arg_float[4];
 };
 
 int main_run(float* config, int idx, ResultStruct* result);
